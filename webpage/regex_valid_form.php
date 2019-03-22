@@ -7,6 +7,8 @@
 
 	$match="Not checked yet.";
 
+	$matches = array(array());
+
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 	$pattern=$_POST["pattern"];
 	$text=$_POST["text"];
@@ -14,8 +16,10 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 	$replacedText=preg_replace($pattern, $replaceText, $text);
 
-	if(preg_match($pattern, $text)) {
+
+	if(preg_match_all($pattern, $text, $matches)) {
 						$match="Match!";
+						
 					} else {
 						$match="Does not match!";
 					}
@@ -47,6 +51,14 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 			<dt>Replaced Text</dt>
 			<dd> <code><?=	$replacedText ?></code></dd>
+			
+			<dt>Matched Text</dt>
+			<dd><ul> <?php foreach ($matches[0] as $match) { ?>
+				
+					<li> <?= $match ?> </li>
+				
+			<?php } ?></ul></dd>
+
 
 			<dt>&nbsp;</dt>
 			<dd><input type="submit" value="Check"></dd>
